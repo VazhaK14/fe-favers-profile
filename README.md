@@ -84,22 +84,5 @@ fe-favers-profile/
 └── public/             # Asset statis seperti gambar atau favicon
 ```
 
----
-
-## 🌐 Panduan Deployment (Vercel)
-
-Proyek ini telah dikonfigurasi secara optimal untuk di-deploy ke **Vercel**.
-
-1. Buat _repository_ baru di GitHub dan _push_ folder ini.
-2. Login ke [Vercel](https://vercel.com/) dan buat proyek baru (_Add New Project_).
-3. Pilih _repository_ GitHub yang baru saja Anda buat.
-4. **Penting**: Pastikan _Framework Preset_ diatur ke **Vite** (Vercel biasanya mendeteksi ini secara otomatis).
-5. Pada bagian **Build and Output Settings**, atur _Install Command_ ke:
-   ```bash
-   bun install
-   ```
-6. Klik **Deploy** dan tunggu prosesnya selesai.
-
----
 
 Built with ❤️ for Favers Profile.
