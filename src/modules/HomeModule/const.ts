@@ -13,7 +13,7 @@ export const members: TeamMember[] = [
     name: "Farrel Arrayyan Adrianshah",
     npm: "123456789",
     role: "Mobdev",
-    desc: "Mau disembah",
+    desc: " Lorem ipsum dolor sit, amet consectetur adipisicing elit. Harum, cupiditate earum? Tenetur sint dolorem eum culpa nobis quae voluptates modi numquam rerum commodi temporibus fugit, laboriosam odio aliquid, officia cum.",
     urlAvatar: "https://i.pravatar.cc/150?u=alice",
   },
 ];
