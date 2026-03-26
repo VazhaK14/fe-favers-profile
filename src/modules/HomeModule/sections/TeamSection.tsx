@@ -16,7 +16,7 @@ function getInitials(name: string) {
 
 export function TeamSection({ members }: { members: TeamMember[] }) {
   return (
-    <main className="relative z-10 py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+    <main className="relative z-10 py-12   px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
       <div className="text-center mb-12">
         <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
           Our Team
@@ -45,6 +45,7 @@ export function TeamSection({ members }: { members: TeamMember[] }) {
                   <h3 className="text-lg font-medium text-slate-900">
                     {member.name}
                   </h3>
+                  <h2>{member.npm}</h2>
                   <p className="text-sm text-slate-500">{member.role}</p>
                 </div>
               </CardHeader>
