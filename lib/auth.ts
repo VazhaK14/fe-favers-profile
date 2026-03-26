@@ -1,8 +1,10 @@
 import { betterAuth } from "better-auth";
-import { Database } from "bun:sqlite";
+import { Pool } from "pg";
 
 export const auth = betterAuth({
-  database: new Database("sqlite.db"),
+  database: new Pool({
+    connectionString: process.env.DATABASE_URL,
+  }),
   secret: process.env.BETTER_AUTH_SECRET,
   socialProviders: {
     google: {
