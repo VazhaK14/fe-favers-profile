@@ -46,6 +46,28 @@ bun run dev
 
 Aplikasi akan langsung dapat diakses melalui browser di: `http://localhost:5173`
 
+### 4. Konfigurasi Backend & Autentikasi (Penting)
+
+Proyek ini menggunakan **Better Auth** dengan **Google OAuth** dan **PostgreSQL**. Setiap developer wajib menyiapkan file `.env` lokal:
+
+1. **Salin Template Environment:**
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Isi Variabel Wajib di `.env`:**
+   - `DATABASE_URL`: Connection string PostgreSQL (bisa gunakan [Neon.tech](https://neon.tech)).
+   - `BETTER_AUTH_SECRET`: Generate menggunakan perintah `npx better-auth secret`.
+   - `BETTER_AUTH_URL`: Set ke `http://localhost:5173`.
+   - `GOOGLE_CLIENT_ID` & `GOOGLE_CLIENT_SECRET`: Dapatkan dari [Google Cloud Console](https://console.cloud.google.com/).
+     - *Authorized Redirect URI:* `http://localhost:5173/api/auth/callback/google`
+
+3. **Jalankan Migrasi Database:**
+   Setelah `.env` terkonfigurasi, sinkronkan struktur tabel database:
+   ```bash
+   npx @better-auth/cli migrate
+   ```
+
 ---
 
 ## 💻 Panduan Pengembangan (Development)
