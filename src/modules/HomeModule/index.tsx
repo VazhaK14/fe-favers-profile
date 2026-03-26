@@ -36,7 +36,7 @@ export default function HomeModule() {
           {members.map((member: TeamMember) => (
             <Card
               key={member.id}
-              className="hover:shadow-md transition-shadow duration-300"
+              className="bg-white/40 backdrop-blur-lg border border-white/40 shadow-lg hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 ease-in-out hover:bg-white/60 p-2"
             >
               <CardHeader className="flex flex-row items-center gap-4 pb-2">
                 <Avatar className="h-16 w-16">

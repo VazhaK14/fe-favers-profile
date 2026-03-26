@@ -3,7 +3,7 @@ import { User } from "lucide-react";
 
 export function Navbar() {
   return (
-    <nav className="flex items-center justify-between p-4 border-b border-slate-200 shadow-sm">
+    <nav className="flex items-center justify-between p-4 border-b shadow-sm sticky top-0 z-50 bg-white/60 backdrop-blur-md border-white/20">
       <div className="flex items-center">
         <span className="text-xl font-bold tracking-tight text-slate-900">
           FAVERS
