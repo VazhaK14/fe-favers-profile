@@ -10,7 +10,8 @@
       }
     },
     "routeIdToServerBundleId": {
-      "routes/Home/page": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0"
+      "routes/Home/page": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/Auth/page": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0"
     },
     "routes": {
       "root": {
@@ -24,6 +25,15 @@
         "parentId": "root",
         "file": "app/routes/Home/page.tsx",
         "index": true,
+        "config": {
+          "runtime": "nodejs"
+        }
+      },
+      "routes/Auth/page": {
+        "id": "routes/Auth/page",
+        "parentId": "root",
+        "file": "app/routes/Auth/page.tsx",
+        "path": "/auth",
         "config": {
           "runtime": "nodejs"
         }
@@ -55,6 +65,12 @@
         "parentId": "root",
         "file": "routes/Home/page.tsx",
         "index": true
+      },
+      "routes/Auth/page": {
+        "id": "routes/Auth/page",
+        "parentId": "root",
+        "file": "routes/Auth/page.tsx",
+        "path": "/auth"
       }
     },
     "routeDiscovery": {
@@ -74,6 +90,10 @@
           {
             "file": "routes/Home/page.tsx",
             "index": true
+          },
+          {
+            "file": "routes/Auth/page.tsx",
+            "path": "/auth"
           }
         ]
       }
