@@ -6,6 +6,8 @@ export const auth = betterAuth({
     connectionString: process.env.DATABASE_URL,
   }),
   secret: process.env.BETTER_AUTH_SECRET,
+  baseURL: process.env.BETTER_AUTH_URL,
+  trustedOrigins: ["http://localhost:5173"],
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID as string,
