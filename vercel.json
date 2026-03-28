@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://be-favers-staging.vercel.app/api/:path*"
+    }
+  ]
+}
