@@ -14,7 +14,7 @@ import { Toaster } from "~/components/ui/sonner";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "FAVERS" },
+    { title: "FAVES" },
     {
       property: "og:title",
       content: "Very cool app",
