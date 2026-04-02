@@ -14,14 +14,13 @@ async function proxyRequest(
   const targetUrl = new URL(`/api/${splat}${url.search}`, API_URL);
 
   const headers = new Headers(request.headers);
-  
-  // Hapus header yang bisa memicu 508 Loop Detected di Vercel (Vercel ke Vercel proxy)
+
   headers.delete("host");
   headers.delete("x-forwarded-host");
   headers.delete("x-forwarded-proto");
   headers.delete("x-forwarded-for");
   headers.delete("forwarded");
-  
+
   // Hapus semua header spesifik Vercel bawaan dari request awal
   const keysToDelete: string[] = [];
   for (const key of headers.keys()) {
@@ -29,7 +28,7 @@ async function proxyRequest(
       keysToDelete.push(key);
     }
   }
-  keysToDelete.forEach(key => headers.delete(key));
+  keysToDelete.forEach((key) => headers.delete(key));
 
   const init: RequestInit = {
     method: request.method,
