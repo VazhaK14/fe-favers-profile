@@ -57,9 +57,17 @@ export const HeroSection = () => {
         variants={subtitleVariants}
         initial="hidden"
         animate="visible"
-        className="mt-6 text-xl md:text-2xl text-foreground/70 font-light tracking-wide text-center"
+        className="mt-6 text-xl px-40 md:text-2xl text-foreground/70 font-light tracking-wide text-center"
       >
-        Crafting digital excellence.
+        Anime Name: Your Lie In April <br />
+        Episode Total: 22 eps <br />
+        Genre: Drama Romance, Music, School,{" "}
+        <a href="https://youtu.be/UBrrK9kSG4M?list=RDUBrrK9kSG4M">
+          {" "}
+          Comedy
+        </a>{" "}
+        <br />
+        Try finding the secret lies in this website
       </motion.p>
     </section>
   );
