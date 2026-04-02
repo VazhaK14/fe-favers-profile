@@ -3,7 +3,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://be-favers-staging.vercel.app/api/$1"
+      "destination": "https://be-favers.vercel.app/api/$1"
     }
   ]
 }
