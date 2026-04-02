@@ -10,10 +10,11 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
+import { Toaster } from "~/components/ui/sonner";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "FAVERS" },
+    { title: "FAVES" },
     {
       property: "og:title",
       content: "Very cool app",
@@ -49,6 +50,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
+        <Toaster />
         <ScrollRestoration />
         <Scripts />
       </body>
