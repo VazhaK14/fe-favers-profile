@@ -1,30 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useFetcher } from "react-router";
 import { Settings, X, Save, AlertCircle } from "lucide-react";
 import { Button } from "~/components/ui/button";
-import { authClient } from "../../../../lib/auth-client";
-import { z } from "zod";
+import { authClient, type ActiveUser } from "../../../../lib/auth-client";
+import { themeSchema, type ThemePayload } from "../../../../lib/api/theme";
 
-// 1. Zod Schema (Mirrors your backend exactly)
-const themeSchema = z.object({
-  fontFamily: z.enum(["Geist Variable", "Inter", "Serif", "Mono"]),
-  primaryColor: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, "Invalid Hex"),
-  backgroundColor: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, "Invalid Hex"),
-  cardColor: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, "Invalid Hex"),
-  accentColor: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, "Invalid Hex"),
-  textColor: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, "Invalid Hex"),
-});
-
-export function ThemeSettings({ currentTheme }: { currentTheme: any }) {
+export function ThemeSettings({ currentTheme }: { currentTheme: ThemePayload | null }) {
   const { data: session } = authClient.useSession();
+  const fetcher = useFetcher();
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  
-  // Track visual errors for the UI
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const [theme, setTheme] = useState({
+  const [theme, setTheme] = useState<ThemePayload>({
     fontFamily: currentTheme?.fontFamily || "Geist Variable",
     primaryColor: currentTheme?.primaryColor || "#000000",
     backgroundColor: currentTheme?.backgroundColor || "#ffffff",
@@ -33,17 +22,22 @@ export function ThemeSettings({ currentTheme }: { currentTheme: any }) {
     textColor: currentTheme?.textColor || "#000000",
   });
 
-  const userRole = (session?.user as any)?.role;
+  // Tipe data sudah aman tanpa 'any'
+  const userRole = (session?.user as ActiveUser)?.role;
+  
+  // Deteksi sukses update dan otomatis tutup modal
+  useEffect(() => {
+    if (fetcher.data && (fetcher.data as any).success) {
+      window.location.reload();
+    }
+  }, [fetcher.data]);
+
   if (userRole !== "MEMBER") return null;
 
-  // 2. Allow typing, but run Zod silently to update the UI error state
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    
-    // Always update the state so the user can type freely
-    setTheme({ ...theme, [name]: value });
+    setTheme((prev) => ({ ...prev, [name]: value }));
 
-    // Run Zod on the specific field to check if it's currently valid
     const fieldSchema = themeSchema.shape[name as keyof typeof themeSchema.shape];
     const result = fieldSchema.safeParse(value);
 
@@ -58,45 +52,27 @@ export function ThemeSettings({ currentTheme }: { currentTheme: any }) {
     }
   };
 
-  const handleSave = async () => {
-    // 3. Final Zod strict check before touching the API
+  const handleSave = () => {
     const result = themeSchema.safeParse(theme);
     
     if (!result.success) {
-      // If they left a half-typed hex code like "#ff" and clicked save, block it!
       const fieldErrors = result.error.flatten().fieldErrors;
-      
-      // Update the UI with all existing errors
       const formattedErrors: Record<string, string> = {};
       Object.entries(fieldErrors).forEach(([key, val]) => {
         if (val && val.length > 0) formattedErrors[key] = val[0];
       });
       setErrors(formattedErrors);
-      return; // Stop execution here
+      return;
     }
 
-    setIsLoading(true);
-    try {
-      const apiUrl = import.meta.env.VITE_PUBLIC_API_URL || "http://localhost:3001";
-      const res = await fetch(`${apiUrl}/api/custom`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(result.data), // Safe, sanitized payload
-        credentials: "include", 
-      });
-
-      if (res.ok) {
-        window.location.reload(); 
-      } else {
-        const err = await res.json();
-        console.error("Backend validation failed:", err);
-      }
-    } catch (error) {
-      console.error("Theme update failed:", error);
-    } finally {
-      setIsLoading(false);
-    }
+    // Eksekusi action React Router. Data dikirim ke server secara aman.
+    fetcher.submit(result.data, { 
+      method: "PATCH", 
+      encType: "application/json" 
+    });
   };
+
+  const isLoading = fetcher.state !== "idle";
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
@@ -143,11 +119,10 @@ export function ThemeSettings({ currentTheme }: { currentTheme: any }) {
                   <label className="text-sm font-medium">{item.label}</label>
                   
                   <div className="flex items-center gap-2">
-                    {/* Text Input with Zod Error Styling */}
                     <input
                       type="text"
                       name={item.name}
-                      value={theme[item.name as keyof typeof theme]}
+                      value={theme[item.name as keyof ThemePayload]}
                       onChange={handleChange}
                       maxLength={7}
                       placeholder="#000000"
@@ -157,19 +132,15 @@ export function ThemeSettings({ currentTheme }: { currentTheme: any }) {
                           : "border-border focus:ring-ring"
                       }`}
                     />
-                    
-                    {/* Visual Color Swatch */}
                     <input
                       type="color"
                       name={item.name}
-                      // If the hex is currently invalid, default the swatch to black to prevent HTML5 color input crashes
-                      value={errors[item.name] ? "#000000" : theme[item.name as keyof typeof theme]}
+                      value={errors[item.name] ? "#000000" : theme[item.name as keyof ThemePayload]}
                       onChange={handleChange}
                       className="h-7 w-7 cursor-pointer rounded-md border-0 p-0 bg-transparent shrink-0"
                     />
                   </div>
                 </div>
-                {/* Inline Error Message */}
                 {errors[item.name] && (
                   <span className="text-xs text-red-500 flex items-center justify-end">
                     <AlertCircle className="w-3 h-3 mr-1" />
