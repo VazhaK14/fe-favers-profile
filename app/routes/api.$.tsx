@@ -4,14 +4,14 @@ async function proxyRequest(
   request: Request,
   params: Record<string, string | undefined>,
 ) {
-  const BACKEND_URL = process.env.API_URL || "http://localhost:3001";
-  if (!BACKEND_URL) {
-    return new Response("BACKEND_URL is not defined", { status: 500 });
+  const API_URL = process.env.API_URL || "http://localhost:3001";
+  if (!API_URL) {
+    return new Response("API_URL is not defined", { status: 500 });
   }
 
   const splat = params["*"] || "";
   const url = new URL(request.url);
-  const targetUrl = new URL(`/api/${splat}${url.search}`, BACKEND_URL);
+  const targetUrl = new URL(`/api/${splat}${url.search}`, API_URL);
 
   const headers = new Headers(request.headers);
   headers.delete("host");
