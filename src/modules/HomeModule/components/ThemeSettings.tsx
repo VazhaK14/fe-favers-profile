@@ -28,7 +28,7 @@ export function ThemeSettings({ currentTheme }: { currentTheme: ThemePayload | n
   // Deteksi sukses update dan otomatis tutup modal
   useEffect(() => {
     if (fetcher.data && (fetcher.data as any).success) {
-      window.location.reload();
+      setIsOpen(false);
     }
   }, [fetcher.data]);
 
