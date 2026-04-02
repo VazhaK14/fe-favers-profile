@@ -1,7 +1,10 @@
 import type { LoaderFunctionArgs, ActionFunctionArgs } from "react-router";
 
-async function proxyRequest(request: Request, params: Record<string, string | undefined>) {
-  const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:3001";
+async function proxyRequest(
+  request: Request,
+  params: Record<string, string | undefined>,
+) {
+  const BACKEND_URL = process.env.API_URL || "http://localhost:3001";
   if (!BACKEND_URL) {
     return new Response("BACKEND_URL is not defined", { status: 500 });
   }

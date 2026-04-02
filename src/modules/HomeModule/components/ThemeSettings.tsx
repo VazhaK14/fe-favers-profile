@@ -6,8 +6,13 @@ import { Settings, X, Save, AlertCircle } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { authClient, type ActiveUser } from "../../../../lib/auth-client";
 import { themeSchema, type ThemePayload } from "../../../../lib/api/theme";
+import z from "zod";
 
-export function ThemeSettings({ currentTheme }: { currentTheme: ThemePayload | null }) {
+export function ThemeSettings({
+  currentTheme,
+}: {
+  currentTheme: ThemePayload | null;
+}) {
   const { data: session } = authClient.useSession();
   const fetcher = useFetcher();
   const [isOpen, setIsOpen] = useState(false);
@@ -24,7 +29,7 @@ export function ThemeSettings({ currentTheme }: { currentTheme: ThemePayload | n
 
   // Tipe data sudah aman tanpa 'any'
   const userRole = (session?.user as ActiveUser)?.role;
-  
+
   // Deteksi sukses update dan otomatis tutup modal
   useEffect(() => {
     if (fetcher.data && (fetcher.data as any).success) {
@@ -34,15 +39,21 @@ export function ThemeSettings({ currentTheme }: { currentTheme: ThemePayload | n
 
   if (userRole !== "MEMBER") return null;
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     const { name, value } = e.target;
     setTheme((prev) => ({ ...prev, [name]: value }));
 
-    const fieldSchema = themeSchema.shape[name as keyof typeof themeSchema.shape];
+    const fieldSchema =
+      themeSchema.shape[name as keyof typeof themeSchema.shape];
     const result = fieldSchema.safeParse(value);
 
     if (!result.success) {
-      setErrors((prev) => ({ ...prev, [name]: result.error.issues[0]?.message || "Invalid" }));
+      setErrors((prev) => ({
+        ...prev,
+        [name]: result.error.issues[0]?.message || "Invalid",
+      }));
     } else {
       setErrors((prev) => {
         const newErrors = { ...prev };
@@ -54,7 +65,7 @@ export function ThemeSettings({ currentTheme }: { currentTheme: ThemePayload | n
 
   const handleSave = () => {
     const result = themeSchema.safeParse(theme);
-    
+
     if (!result.success) {
       const fieldErrors = result.error.flatten().fieldErrors;
       const formattedErrors: Record<string, string> = {};
@@ -66,9 +77,9 @@ export function ThemeSettings({ currentTheme }: { currentTheme: ThemePayload | n
     }
 
     // Eksekusi action React Router. Data dikirim ke server secara aman.
-    fetcher.submit(result.data, { 
-      method: "PATCH", 
-      encType: "application/json" 
+    fetcher.submit(result.data, {
+      method: "PATCH",
+      encType: "application/json",
     });
   };
 
@@ -77,7 +88,10 @@ export function ThemeSettings({ currentTheme }: { currentTheme: ThemePayload | n
   return (
     <div className="fixed bottom-6 right-6 z-50">
       {!isOpen && (
-        <Button onClick={() => setIsOpen(true)} className="rounded-full shadow-lg h-14 w-14">
+        <Button
+          onClick={() => setIsOpen(true)}
+          className="rounded-full shadow-lg h-14 w-14"
+        >
           <Settings className="h-6 w-6" />
         </Button>
       )}
@@ -86,7 +100,11 @@ export function ThemeSettings({ currentTheme }: { currentTheme: ThemePayload | n
         <div className="bg-card text-card-foreground border border-border rounded-xl shadow-2xl p-6 w-80 space-y-4">
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-semibold text-lg">Theme Settings</h3>
-            <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)}>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsOpen(false)}
+            >
               <X className="h-5 w-5" />
             </Button>
           </div>
@@ -117,7 +135,7 @@ export function ThemeSettings({ currentTheme }: { currentTheme: ThemePayload | n
               <div key={item.name} className="flex flex-col gap-1">
                 <div className="flex justify-between items-center">
                   <label className="text-sm font-medium">{item.label}</label>
-                  
+
                   <div className="flex items-center gap-2">
                     <input
                       type="text"
@@ -127,15 +145,19 @@ export function ThemeSettings({ currentTheme }: { currentTheme: ThemePayload | n
                       maxLength={7}
                       placeholder="#000000"
                       className={`w-20 border rounded-md p-1 text-xs uppercase font-mono focus:outline-none focus:ring-2 ${
-                        errors[item.name] 
-                          ? "border-red-500 focus:ring-red-500" 
+                        errors[item.name]
+                          ? "border-red-500 focus:ring-red-500"
                           : "border-border focus:ring-ring"
                       }`}
                     />
                     <input
                       type="color"
                       name={item.name}
-                      value={errors[item.name] ? "#000000" : theme[item.name as keyof ThemePayload]}
+                      value={
+                        errors[item.name]
+                          ? "#000000"
+                          : theme[item.name as keyof ThemePayload]
+                      }
                       onChange={handleChange}
                       className="h-7 w-7 cursor-pointer rounded-md border-0 p-0 bg-transparent shrink-0"
                     />
@@ -151,9 +173,9 @@ export function ThemeSettings({ currentTheme }: { currentTheme: ThemePayload | n
             ))}
           </div>
 
-          <Button 
-            onClick={handleSave} 
-            disabled={isLoading || Object.keys(errors).length > 0} 
+          <Button
+            onClick={handleSave}
+            disabled={isLoading || Object.keys(errors).length > 0}
             className="w-full mt-4"
           >
             <Save className="h-4 w-4 mr-2" />
