@@ -14,23 +14,25 @@ async function proxyRequest(
   const targetUrl = new URL(`/api/${splat}${url.search}`, API_URL);
 
   const headers = new Headers(request.headers);
-  const originalHost = headers.get("x-forwarded-host") || headers.get("host") || url.host;
-  const originalProto = headers.get("x-forwarded-proto") || url.protocol.replace(':', '');
+  const originalHost =
+    headers.get("x-forwarded-host") || headers.get("host") || url.host;
+  const originalProto =
+    headers.get("x-forwarded-proto") || url.protocol.replace(":", "");
 
-  headers.delete("host");
-  headers.delete("x-forwarded-host");
-  headers.delete("x-forwarded-proto");
-  headers.delete("x-forwarded-for");
-  headers.delete("forwarded");
+  // headers.delete("host");
+  // headers.delete("x-forwarded-host");
+  // headers.delete("x-forwarded-proto");
+  // headers.delete("x-forwarded-for");
+  // headers.delete("forwarded");
 
-  // Hapus semua header spesifik Vercel bawaan dari request awal
-  const keysToDelete: string[] = [];
-  for (const key of headers.keys()) {
-    if (key.toLowerCase().startsWith("x-vercel-")) {
-      keysToDelete.push(key);
-    }
-  }
-  keysToDelete.forEach((key) => headers.delete(key));
+  // // Hapus semua header spesifik Vercel bawaan dari request awal
+  // const keysToDelete: string[] = [];
+  // for (const key of headers.keys()) {
+  //   if (key.toLowerCase().startsWith("x-vercel-")) {
+  //     keysToDelete.push(key);
+  //   }
+  // }
+  // keysToDelete.forEach((key) => headers.delete(key));
 
   if (originalHost) headers.set("x-forwarded-host", originalHost);
   if (originalProto) headers.set("x-forwarded-proto", originalProto);
