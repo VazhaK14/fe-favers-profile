@@ -18,10 +18,10 @@ export function TeamSection({ members }: { members: TeamMember[] }) {
   return (
     <main className="relative z-10 py-12   px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
       <div className="text-center mb-12">
-        <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+        <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
           Our Team
         </h2>
-        <p className="mt-4 text-xl text-slate-500 leading-relaxed max-w-2xl mx-auto">
+        <p className="mt-4 text-xl text-foreground/70 leading-relaxed max-w-2xl mx-auto">
           The people behind the magic.
         </p>
       </div>
@@ -35,18 +35,18 @@ export function TeamSection({ members }: { members: TeamMember[] }) {
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
           >
-            <Card className="bg-white/40 backdrop-blur-lg border border-white/40 shadow-lg hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 ease-in-out hover:bg-white/60 p-2 h-full">
+            <Card className="bg-card/40 backdrop-blur-lg border border-white/40 shadow-lg hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 ease-in-out hover:bg-white/60 p-2 h-full">
               <CardHeader className="flex flex-row items-center gap-4 pb-2">
                 <Avatar className="h-16 w-16">
                   <AvatarImage src={member.urlAvatar} alt={member.name} />
                   <AvatarFallback>{getInitials(member.name)}</AvatarFallback>
                 </Avatar>
                 <div>
-                  <h3 className="text-lg font-medium text-slate-900">
+                  <h3 className="text-lg font-medium text-foreground">
                     {member.name}
                   </h3>
                   <h2>{member.npm}</h2>
-                  <p className="text-sm text-slate-500">{member.role}</p>
+                  <p className="text-sm text-foreground/70">{member.role}</p>
                 </div>
               </CardHeader>
               <CardContent>

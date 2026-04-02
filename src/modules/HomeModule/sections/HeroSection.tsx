@@ -33,10 +33,10 @@ export const HeroSection = () => {
     },
   };
 
-  const titleText = "FAVERS".split("");
+  const titleText = "FAVES".split("");
 
   return (
-    <section className="flex flex-col items-center justify-center min-h-[80vh] w-full px-4 overflow-hidden bg-white">
+    <section className="flex flex-col items-center justify-center min-h-[80vh] w-full px-4 overflow-hidden bg-transparent">
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -47,7 +47,7 @@ export const HeroSection = () => {
           <motion.span
             key={index}
             variants={itemVariants}
-            className="text-7xl md:text-9xl font-black tracking-tighter text-slate-900 inline-block"
+            className="text-7xl md:text-9xl font-black tracking-tighter text-foreground inline-block"
           >
             {char}
           </motion.span>
@@ -57,9 +57,17 @@ export const HeroSection = () => {
         variants={subtitleVariants}
         initial="hidden"
         animate="visible"
-        className="mt-6 text-xl md:text-2xl text-slate-500 font-light tracking-wide text-center"
+        className="mt-6 text-xl px-40 md:text-2xl text-foreground/70 font-light tracking-wide text-center"
       >
-        Crafting digital excellence.
+        Anime Name: Your Lie In April <br />
+        Episode Total: 22 eps <br />
+        Genre: Drama Romance, Music, School,{" "}
+        <a href="https://youtu.be/UBrrK9kSG4M?list=RDUBrrK9kSG4M">
+          {" "}
+          Comedy
+        </a>{" "}
+        <br />
+        Try finding the secret lies in this website
       </motion.p>
     </section>
   );
