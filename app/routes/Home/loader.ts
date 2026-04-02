@@ -5,7 +5,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   let theme = null;
   
   try {
-    const apiUrl = process.env.VITE_PUBLIC_API_URL || "http://localhost:3001";
+    const apiUrl = process.env.API_URL || "http://localhost:3001";
     const res = await fetch(`${apiUrl}/api/custom`);
     if (res.ok) {
       theme = await res.json();
