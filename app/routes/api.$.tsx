@@ -14,6 +14,8 @@ async function proxyRequest(
   const targetUrl = new URL(`/api/${splat}${url.search}`, API_URL);
 
   const headers = new Headers(request.headers);
+  const originalHost = headers.get("x-forwarded-host") || headers.get("host") || url.host;
+  const originalProto = headers.get("x-forwarded-proto") || url.protocol.replace(':', '');
 
   headers.delete("host");
   headers.delete("x-forwarded-host");
@@ -29,6 +31,9 @@ async function proxyRequest(
     }
   }
   keysToDelete.forEach((key) => headers.delete(key));
+
+  if (originalHost) headers.set("x-forwarded-host", originalHost);
+  if (originalProto) headers.set("x-forwarded-proto", originalProto);
 
   const init: RequestInit = {
     method: request.method,
